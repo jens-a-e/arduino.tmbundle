@@ -204,7 +204,8 @@ ALL_LDFLAGS = $(LDFLAGS) -mmcu=$(MCU)
 # ==================
 # = AVR Dude Flags =
 # ==================
-AVRDUDE_FLAGS = -V -F -C $(INSTALL_DIR)/hardware/tools/avr/etc/avrdude.conf \
+# AVRDUDE_FLAGS = -V -F -C $(INSTALL_DIR)/hardware/tools/avr/etc/avrdude.conf \
+
 AVRDUDE_FLAGS = -V -F -C $(INSTALL_DIR)/hardware/tools/avr/etc/avrdude.conf \
 -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER) \
 -b $(UPLOAD_RATE)
