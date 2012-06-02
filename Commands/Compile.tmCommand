@@ -6,10 +6,10 @@
 	<string>saveModifiedFiles</string>
 	<key>command</key>
 	<string>#!/bin/bash
-
-echo "&lt;pre&gt;"
+echo "`"$TM_BUNDLE_SUPPORT"/header.sh`"
+echo "&lt;pre&gt;&lt;code&gt;"
 /Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/make -e -f "$TM_BUNDLE_SUPPORT/Makefile"
-echo "&lt;/pre&gt;"</string>
+echo "&lt;/code&gt;&lt;/pre&gt;"</string>
 	<key>input</key>
 	<string>none</string>
 	<key>keyEquivalent</key>

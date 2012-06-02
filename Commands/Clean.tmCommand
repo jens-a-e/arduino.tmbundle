@@ -3,24 +3,24 @@
 <plist version="1.0">
 <dict>
 	<key>beforeRunningCommand</key>
-	<string>saveModifiedFiles</string>
+	<string>nop</string>
 	<key>command</key>
 	<string>#!/bin/bash
 echo "`"$TM_BUNDLE_SUPPORT"/header.sh`"
 echo "&lt;pre&gt;&lt;code&gt;"
-/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/make -e -f "$TM_BUNDLE_SUPPORT/Makefile" upload
+/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/make -e -f "$TM_BUNDLE_SUPPORT/Makefile" clean
 echo "&lt;/code&gt;&lt;/pre&gt;"</string>
 	<key>input</key>
 	<string>none</string>
 	<key>keyEquivalent</key>
-	<string>@u</string>
+	<string>~@C</string>
 	<key>name</key>
-	<string>Upload</string>
+	<string>Clean</string>
 	<key>output</key>
 	<string>showAsHTML</string>
 	<key>scope</key>
 	<string>source.c++.arduino</string>
 	<key>uuid</key>
-	<string>66F3D8A7-5A16-4D87-9962-3A25328DC71A</string>
+	<string>861B21AF-3D50-4A17-B0E2-D3F659C2686F</string>
 </dict>
 </plist>
