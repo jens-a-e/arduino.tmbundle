@@ -264,6 +264,8 @@ debug:
 build: prepare elf hex
 	@echo "Building $(TARGET) finished!"
 
+rebuild: clean build
+
 #applet_files: $(TARGET).pde
 # applet_files: $(TARGET).ino
 #  $(TARGET).ino
