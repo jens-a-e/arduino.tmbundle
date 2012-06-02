@@ -75,7 +75,7 @@ AVRDUDE_PATH = $(INSTALL_DIR)/hardware/tools/avr/bin
 # ==================================
 # Programming support using avrdude. Settings and variables.
 AVRDUDE_PORT = $(PORT)
-AVRDUDE_WRITE_FLASH = -U flash:w:applet/$(TARGET).hex
+AVRDUDE_WRITE_FLASH = -U flash:w:build/$(TARGET).hex
 
 
 # ================
@@ -107,8 +107,8 @@ $(wildcard $(INSTALL_DIR)/libraries/*/*/*.c) \
 $(wildcard $(INSTALL_DIR)/libraries/*/*/*/*.c)
 
 
-CXX_APP = applet/$(TARGET).cpp
-LOCAL_CSRC = $(wildcard *.c)
+CXX_APP      = build/$(TARGET).cpp
+LOCAL_CSRC   = $(wildcard *.c)
 LOCAL_CXXSRC = $(wildcard *.cpp)
 
 # ===================
@@ -237,17 +237,17 @@ all: build sizeafter
 # Target: clean project.
 clean:
 	$(REMOVE) \
-	applet/$(TARGET).hex \
-	applet/$(TARGET).eep \
-	applet/$(TARGET).cof \
-	applet/$(TARGET).elf \
-	applet/$(TARGET).map \
-	applet/$(TARGET).sym \
-	applet/$(TARGET).lss \
-	applet/*.o \
-	applet/*.c \
-	applet/*.cpp \
-	applet/core.a \
+	build/$(TARGET).hex \
+	build/$(TARGET).eep \
+	build/$(TARGET).cof \
+	build/$(TARGET).elf \
+	build/$(TARGET).map \
+	build/$(TARGET).sym \
+	build/$(TARGET).lss \
+	build/*.o \
+	build/*.c \
+	build/*.cpp \
+	build/core.a \
 	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)
 
 debug:
@@ -260,14 +260,15 @@ debug:
 	@echo "All Objects:"
 	@for i in $(OBJ);          do echo "   "$$i; done
 
-
-build: elf hex
+#elf hex
+build: prepare elf hex
 	@echo "Building $(TARGET) finished!"
 
 #applet_files: $(TARGET).pde
 # applet_files: $(TARGET).ino
 #  $(TARGET).ino
-applet/$(TARGET).cpp:
+# build/$(TARGET).cpp: $(TARGET).ino
+prepare:
 	# Here is the "preprocessing".
 	# It creates a .cpp file based with the same name as the .ino file.
 	# On top of the new .cpp file comes the WProgram.h header.
@@ -275,48 +276,47 @@ applet/$(TARGET).cpp:
 	# Then the .cpp file will be compiled. Errors during compile will
 	# refer to this new, automatically generated, file.
 	# Not the original .ino file you actually edit...
-	test -d applet || mkdir applet
-	echo '#include "Arduino.h"' > applet/$(TARGET).cpp
-	echo 'void setup();' >> applet/$(TARGET).cpp
-	echo 'void loop();'  >> applet/$(TARGET).cpp
-	cat $(TARGET).ino    >> applet/$(TARGET).cpp
+	test -d build || mkdir build
+	echo '#include "Arduino.h"' > build/$(TARGET).cpp
+	echo 'void setup();' >> build/$(TARGET).cpp
+	echo 'void loop();'  >> build/$(TARGET).cpp
+	cat $(TARGET).ino    >> build/$(TARGET).cpp
 
-elf: applet/$(TARGET).elf
-hex: applet/$(TARGET).hex
-eep: applet/$(TARGET).eep
-lss: applet/$(TARGET).lss
-sym: applet/$(TARGET).sym
+elf: build/$(TARGET).elf
+hex: build/$(TARGET).hex
+eep: build/$(TARGET).eep
+lss: build/$(TARGET).lss
+sym: build/$(TARGET).sym
 
 # Program the device.  
-upload: applet/$(TARGET).hex
+upload: build/$(TARGET).hex
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH)
 
 # Display size of file.
-HEXSIZE = $(SIZE) --target=$(FORMAT) applet/$(TARGET).hex
-ELFSIZE = $(SIZE)  applet/$(TARGET).elf
+HEXSIZE = $(SIZE) --target=$(FORMAT) build/$(TARGET).hex
+ELFSIZE = $(SIZE)  build/$(TARGET).elf
 
 sizebefore:
-	@if [ -f applet/$(TARGET).elf ]; then echo; echo $(MSG_SIZE_BEFORE); $(HEXSIZE); echo; fi
+	@if [ -f build/$(TARGET).elf ]; then echo; echo $(MSG_SIZE_BEFORE); $(HEXSIZE); echo; fi
 
 sizeafter:
-	@if [ -f applet/$(TARGET).elf ]; then echo; echo $(MSG_SIZE_AFTER); $(HEXSIZE); echo; fi
+	@if [ -f build/$(TARGET).elf ]; then echo; echo $(MSG_SIZE_AFTER); $(HEXSIZE); echo; fi
 
 
 # Link: create ELF output file from library.
-# applet/$(TARGET).elf: $(TARGET).ino applet/core.a
-# applet/$(TARGET).elf:
-applet/$(TARGET).elf: applet/$(TARGET).o
-	$(LD) $(ALL_LDFLAGS) -o $@ applet/$(TARGET).o applet/core.a $(LOCAL_OBJ)
+# build/$(TARGET).elf: $(TARGET).ino build/core.a
+# build/$(TARGET).elf:
+build/$(TARGET).elf: build/$(TARGET).o
+	$(LD) $(ALL_LDFLAGS) -o $@ build/$(TARGET).o build/core.a $(LOCAL_OBJ)
 
 # Build the local files before heading over
-applet/$(TARGET).o: applet/core.a $(LOCAL_OBJ)
-	@echo "Building $(TARGET)"
+build/$(TARGET).o: build/core.a $(LOCAL_OBJ)
 
 # clean_local:
-# $(REMOVE) $(LOCAL_OBJ) applet/$(TARGET).o
+# $(REMOVE) $(LOCAL_OBJ) build/$(TARGET).o
 
-applet/core.a: $(OBJ_MODULES)
-	@for i in $(OBJ_MODULES); do echo $(AR) rcs applet/core.a $$i; $(AR) rcs applet/core.a $$i; done
+build/core.a: $(OBJ_MODULES)
+	@for i in $(OBJ_MODULES); do echo $(AR) rcs build/core.a $$i; $(AR) rcs build/core.a $$i; done
 
 
 # Compile: create object files from C++ source files.
@@ -353,11 +353,11 @@ COFFCONVERT=$(OBJCOPY) --debugging \
 --change-section-address .noinit-0x800000 \
 --change-section-address .eeprom-0x810000
 
-coff: applet/$(TARGET).elf
-	$(COFFCONVERT) -O coff-avr applet/$(TARGET).elf $(TARGET).cof
+coff: build/$(TARGET).elf
+	$(COFFCONVERT) -O coff-avr build/$(TARGET).elf $(TARGET).cof
 
 extcoff: $(TARGET).elf
-	$(COFFCONVERT) -O coff-ext-avr applet/$(TARGET).elf $(TARGET).cof
+	$(COFFCONVERT) -O coff-ext-avr build/$(TARGET).elf $(TARGET).cof
 
 
 .SUFFIXES: .elf .hex .eep .lss .sym
