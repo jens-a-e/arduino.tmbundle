@@ -12,22 +12,27 @@ Installation
 ============
 1. [Get the latest Arduino](http://arduino.cc/en/Guide/MacOSX). Version 1.0 and later is supported, and it must be installed to /Applications
 2. [Get TextMate](http://macromates.com/).
-3. [Get the latest Arduino TextMate bundle](https://github.com/nasser/arduino.tmbundle/zipball/v1.0a).
+3. [Get the latest Arduino TextMate bundle](https://github.com/jens-a-e/arduino.tmbundle/zipball/1.0.1a).
 4. Extract the zip file to `~/Library/Application Support/TextMate/Bundles/Arduino.tmbundle`
 5. If TextMate was open during this process, click Bundles>Bundle Editor>Reload Bundles
-6. Check the 'Default Environment vars' near the top of `~/Library/Application Support/TextMate/Bundles/Arduino.tmbundle/Support/Makefile`.  Any you need to override - especially check the ARDUINO_MCU var - can be added in TextMate's Preferences => Advanced => Shell Variables.
+6. Check the 'Default Environment vars' near the top of `~/Library/Application Support/TextMate/Bundles/Arduino.tmbundle/Support/Makefile`.  Any you need to override - especially check the ARDUINO_MCU var - can be added in TextMate's Preferences => Advanced => Shell Variables or the project specific Shell Variables.
 
 
 Usage
 =====
+* **⌘B** Compiles your sketch
+* **⌃⌥⌘C** Makes the build clean again
+* **⌃⌥⌘R** Re-build the project (makes build and clean in on go)
 * **⌘U** Compiles and uploads your sketch to the connected Arduino
 * **⌃⌥⌘H** Opens up local HTML documentation on to current word
 * **Bundles > Arduino > Watch Serial Port** Opens a terminal window monitoring the serial port.
 * **File > New From Template > Arduino > Basic Sketch** Creates a file with a blank basic sketch.
+* **Bundles > Arduino > New Sketch (⌃⌥⌘N)** Starts a dialog to create a new project (creates a folder with a basic sketch, adds a textmate project file and opens it)
+
 
 Shell Variables
 ===============
-The compile/upload process can be finely controlled using TextMate's shell variables.
+The compile/upload process can be finely controlled using TextMate's shell variables. _(This will be revised in later version to have a dialog for this)_
 
 Textmate > Preferences > Advanced > Shell Variables
 
@@ -66,10 +71,19 @@ Bleeding Edge
 =============
 For the adventurous
 
-    git clone git://github.com/nasser/arduino.tmbundle.git ~/Library/Application\ Support/TextMate/Bundles/Arduino.tmbundle
+    git clone git://github.com/jens-a-e/arduino.tmbundle.git ~/Library/Application\ Support/TextMate/Bundles/Arduino.tmbundle
     
+
 Changes
 =======
+
+1.0.1a
+------
+* Improved Makefile (using `build` as directory name, fixed some dependencies)
+* Improved `Watch serial port` as the script was confused about the path
+* Added comand to create a new project and open it for editing
+* Added some sytle and highlight.js to the compiler output window
+
 1.0a
 ----
 * Fixed for Arduino 1.0
