@@ -19,7 +19,7 @@ RUBYLIB="$TM_BUNDLE_SUPPORT/lib:$RUBYLIB"
 	<key>name</key>
 	<string>New Sketch</string>
 	<key>output</key>
-	<string>showAsHTML</string>
+	<string>discard</string>
 	<key>uuid</key>
 	<string>C1AACA57-8422-4657-ACF1-1172B1B99CAB</string>
 </dict>
