@@ -92,8 +92,13 @@ $(ARDUINO)/wiring_shift.c \
 CXX_MODULES = \
 $(ARDUINO)/Tone.cpp \
 $(ARDUINO)/main.cpp \
+$(ARDUINO)/new.cpp \
 $(ARDUINO)/WMath.cpp \
 $(ARDUINO)/Print.cpp \
+$(ARDUINO)/Stream.cpp \
+$(ARDUINO)/WString.cpp \
+$(ARDUINO)/IPAddress.cpp \
+$(ARDUINO)/USBCore.cpp \
 $(ARDUINO)/HardwareSerial.cpp
 
 ARDUINO_LIB = \
